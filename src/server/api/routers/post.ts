@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import {
   createTRPCRouter,
+  protectedAdminProcedure,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
@@ -34,6 +35,10 @@ export const postRouter = createTRPCRouter({
       orderBy: { createdAt: "desc" },
       where: { createdBy: { id: ctx.session.user.id } },
     });
+  }),
+
+  getAll: protectedAdminProcedure.query(({ ctx }) => {
+    return ctx.db.post.findMany();
   }),
 
   getSecretMessage: protectedProcedure.query(() => {
