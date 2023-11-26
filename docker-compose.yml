@@ -1,0 +1,35 @@
+version: "0.0.1"
+services:
+  mysql: 
+    image : mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 2zB72z5&U5%=X
+      MYSQL_DATABASE: testDb
+    ports:
+      - "3306:3306"
+    networks:
+      - appNetwork
+
+  app:
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_CLIENTVAR: "clientvar"
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    image: t3-app
+    networks:
+      - appNetwork
+    environment:
+      - DATABASE_URL=mysql://root:2zB72z5&U5%=X@mysql:3306/testDb
+      - NEXTAUTH_SECRET=OhWiIMvslqTT+j4Y0qMEojGTpsMbsIgVF+iIbsT535c=
+      - NEXTAUTH_URL=http://localhost:3000
+      - GITHUB_CLIENT_ID=415f3aa69207bbdbf9cf
+      - GITHUB_CLIENT_SECRET=31e5cc83519347d47a789266dc9ca4a4667334db
+      
+networks:
+  appNetwork:
+    driver: bridge
