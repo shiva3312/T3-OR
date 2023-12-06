@@ -1,15 +1,18 @@
-version: "0.0.1"
+version: "3.9"
 services:
-  mysql: 
-    image : mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: 2zB72z5&U5%=X
-      MYSQL_DATABASE: testDb
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
     ports:
-      - "3306:3306"
-    networks:
-      - appNetwork
-
+      - 3306:3306
+    environment:
+      MYSQL_USER: orider
+      MYSQL_PASSWORD: KyCngL6XPzU=
+      MYSQL_DATABASE: oriderDB
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+    volumes:
+      - db:/var/lib/mysql
   app:
     platform: "linux/amd64"
     build:
@@ -21,15 +24,12 @@ services:
     ports:
       - "3000:3000"
     image: t3-app
-    networks:
-      - appNetwork
+
     environment:
-      - DATABASE_URL=mysql://root:2zB72z5&U5%=X@mysql:3306/testDb
+      - DATABASE_URL=mysql://orider:KyCngL6XPzU=@db:3306/oriderDB
       - NEXTAUTH_SECRET=OhWiIMvslqTT+j4Y0qMEojGTpsMbsIgVF+iIbsT535c=
       - NEXTAUTH_URL=http://localhost:3000
       - GITHUB_CLIENT_ID=415f3aa69207bbdbf9cf
       - GITHUB_CLIENT_SECRET=31e5cc83519347d47a789266dc9ca4a4667334db
-      
-networks:
-  appNetwork:
-    driver: bridge
+volumes:
+  db: {}
