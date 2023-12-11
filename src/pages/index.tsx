@@ -1,11 +1,11 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
-
+import { useEffect, useState } from "react";
+import { type Post } from "@prisma/client";
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  const hello = api.post.hello.useQuery({ text: ", World!" });
 
   return (
     <>
@@ -17,13 +17,10 @@ export default function Home() {
       <main className=" flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Hello, World!
+            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </h1>
 
           <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-            </p>
             <p className="text-2xl text-white">
               Created with ❤️ shivam chaurasiya
             </p>
@@ -37,11 +34,43 @@ export default function Home() {
 
 function AuthShowcase() {
   const { data: sessionData } = useSession();
-
-  const { data: secretMessage } = api.post.getSecretMessage.useQuery(
+  let { data: secretMessage, isLoading } = api.post.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined }
   );
+
+  const [post, setPost] = useState("");
+  const getPosts = api.post.getAll.useQuery();
+
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const createPostApi = api.post.create.useMutation();
+
+  const createPost = async () => {
+    try {
+      if (post) {
+        const res = await createPostApi.mutateAsync({ name: `${post}` });
+        if (res) {
+          setPost("");
+          setPosts([...(posts ?? []), res]);
+          console.log("Response: ", res)
+        }
+
+      }
+      else {
+        console.log("Empty post is not acceptable");
+      }
+    } catch (error) {
+      console.error("Error while create post ....")
+    }
+  }
+
+  useEffect(() => {
+    if (posts?.length <= 0) {
+      console.log(isLoading)
+      setPosts([...(getPosts?.data ?? [])]);
+    }
+  }, [isLoading]) // isloading, getPosts?.data ...etc
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
@@ -55,6 +84,21 @@ function AuthShowcase() {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
+      <input type="text" value={post} onChange={(e) => setPost(e.target.value)} />
+      <button
+        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        onClick={createPost} >Create Post </button>
+      <div>
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-3xl text-white">Post- {posts?.length}</p>
+          <div className="h-24 w-48 overflow-y-scroll bg-teal-500">
+            {
+              posts?.map((post: Post) => <p key={post.id}>{post.id}- {post.name}</p>)
+            }
+          </div>
+          <p className="text-2xl text-white"></p>
+        </div>
+      </div>
     </div>
   );
 }
