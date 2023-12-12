@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { api } from "~/utils/api";
+import { Counter } from "./Counter/Counter";
 
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
@@ -28,6 +29,7 @@ export default function Home() {
               Created with ❤️ shivam chaurasiya
             </p>
             <AuthShowcase />
+            <Counter />
           </div>
         </div>
       </main>
