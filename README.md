@@ -26,3 +26,19 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 ## How do I deploy this?
 
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+
+# Runing up with docker & docker compose
+
+## Change Credential
+
+    MYSQL_USER: foo
+    MYSQL_PASSWORD: password
+    MYSQL_DATABASE: bar
+
+## follow step to start application using docker compose
+Step 1: Run comand - docker compose up 
+Step 2: Include database url in .env file by after replacing above credentials -  DATABASE_URL=mysql://foo:password@localhost:3306/bar
+Step 2: Run comand - yarn db:push 
+
+Check on port 3000

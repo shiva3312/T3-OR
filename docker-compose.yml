@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: orider
+      MYSQL_PASSWORD: KyCngL6XPzU=
+      MYSQL_DATABASE: oriderDB
+      MYSQL_RANDOM_ROOT_PASSWORD: true
+    volumes:
+      - db:/var/lib/mysql
+  app:
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_CLIENTVAR: "clientvar"
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    image: t3-app
+
+    environment:
+      - DATABASE_URL=mysql://orider:KyCngL6XPzU=@db:3306/oriderDB
+      - NEXTAUTH_SECRET=OhWiIMvslqTT+j4Y0qMEojGTpsMbsIgVF+iIbsT535c=
+      - NEXTAUTH_URL=http://localhost:3000
+      - GITHUB_CLIENT_ID=415f3aa69207bbdbf9cf
+      - GITHUB_CLIENT_SECRET=31e5cc83519347d47a789266dc9ca4a4667334db
+volumes:
+  db: {}
