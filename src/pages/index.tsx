@@ -1,7 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { api } from "~/utils/api";
-import Counter from "./Counter/Counter";
+import Link from 'next/link';
 
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
@@ -27,10 +27,21 @@ export default function Home() {
               Created with ❤️ shivam chaurasiya
             </p>
             <AuthShowcase />
-            <Counter />
           </div>
         </div>
-      </main>
+        <div className="flex justify-center align-center">
+          <Link href="/counter">
+            <button className="rounded text-xs bg-white/10 px-5 py-2 mx-3 font-semibold text-white no-underline transition hover:bg-white/20">
+              Counter Page
+            </button>
+          </Link>
+          <Link href="/crud">
+            <button className="rounded text-xs bg-white/10 px-5 py-2 mx-3 font-semibold text-white no-underline transition hover:bg-white/20">
+              CRUD Page
+            </button>
+          </Link>
+        </div>
+      </main >
     </>
   );
 }
