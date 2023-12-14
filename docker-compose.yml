@@ -31,5 +31,6 @@ services:
       - NEXTAUTH_URL=http://localhost:3000
       - GITHUB_CLIENT_ID=415f3aa69207bbdbf9cf
       - GITHUB_CLIENT_SECRET=31e5cc83519347d47a789266dc9ca4a4667334db
+      - JWT_SECRET=40xT+ZyEEa8z5BwKrZYITrQYXseY7VMZfXHJxQxFh2dvhhz+4NSKqynkfhe1BFRVklKYhvs1kL9i5Vhxu9PQ=="
 volumes:
   db: {}

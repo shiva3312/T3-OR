@@ -17,7 +17,7 @@ import { Providers } from "~/lib/providers";
 // Your theme configuration is merged with default theme
 const theme = createTheme({
   fontFamily: 'Montserrat, sans-serif',
-  defaultRadius: 'md',
+  defaultRadius: 'xs',
 });
 
 const MyApp: AppType<{ session: Session | null }> = ({

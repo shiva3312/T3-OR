@@ -132,7 +132,7 @@ export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
 /** Reusable middleware that enforces users is admin, before running the procedure. */
 const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
-  if (!ctx.session?.user || ctx?.session?.user?.role !== "admin") {
+  if (!ctx.session?.user || ctx?.session?.user?.userRole !== "ADMIN") {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "This action require admin access.",

@@ -54,7 +54,7 @@ function AuthShowcase() {
     return (
         <div className="flex flex-col items-center justify-center gap-4">
             <p className="text-center text-xs text-white">
-                {sessionData ? <span>Logged in as {sessionData.user?.name}</span> : <span>Please login.</span>}
+                {sessionData ? <span>Logged in as {sessionData.user?.username}</span> : <span>Please login.</span>}
                 {secretMessage && <span> - {secretMessage}</span>}
             </p>
         </div>
