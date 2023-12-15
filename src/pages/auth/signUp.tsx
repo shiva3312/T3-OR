@@ -12,9 +12,11 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { api } from "~/utils/api";
 
+
 export default function AuthenticationTitle() {
     const router = useRouter();
     const createUser = api.auth.create.useMutation();
+
     const [user, setUser] = useState({
         username: '',
         password: '',
@@ -25,9 +27,14 @@ export default function AuthenticationTitle() {
         setUser({ ...user, [e.target.name]: e.target.value })
     }
 
-    const handelSubmit = () => {
+    const handelSubmit = async () => {
         if (user.username !== '' && user.password !== '' && user.confirmPassword !== '' && user.password === user.confirmPassword) {
-            createUser.mutate(user);
+            const response = await createUser.mutateAsync(user);
+            if (response?.error) {
+                console.log(response?.error?.message, response)
+            } else {
+                response?.data?.userId ? await handleSingInRef() : console.log(createUser.data?.error?.message);
+            }
         }
     }
 
@@ -38,17 +45,6 @@ export default function AuthenticationTitle() {
             console.error('Error while redirecting to login:', error);
         }
     }, [router])
-
-    useEffect(() => {
-        const routToLogin = async () => {
-            try {
-                createUser.data?.success ? await handleSingInRef() : console.log(createUser.data?.messgae);
-            } catch (error) {
-                console.error("Something went wrong.", error);
-            }
-        };
-        routToLogin();
-    }, [createUser.data, handleSingInRef]);
 
     return (
         <main className=" flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">

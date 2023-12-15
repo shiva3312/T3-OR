@@ -1,6 +1,7 @@
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { TRPCError } from "@trpc/server";
 
 export const authRouter = createTRPCRouter({
   create: publicProcedure
@@ -18,7 +19,12 @@ export const authRouter = createTRPCRouter({
         });
 
         if (existingUser !== null) {
-          return { success: false, messgae: "User already exist." };
+          console.log("User Exist");
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "User already exists. Try with a different username.",
+            cause: "User already exists",
+          });
         }
 
         const hashedPassword = await bcrypt.hash(input.password, 10);
@@ -32,14 +38,21 @@ export const authRouter = createTRPCRouter({
 
         if (newUser) {
           return {
-            success: true,
-            userId: newUser.id,
-            username: newUser.username,
-            userRole: newUser.role,
+            data: {
+              userId: newUser.id,
+              username: newUser.username,
+              userRole: newUser.role,
+            },
           };
         }
-      } catch (error) {
-        return { success: false, message: "Server Error while creating user." };
+      } catch (error: any) {
+        return {
+          error: {
+            code: error.code || "INTERNAL_SERVER_ERROR",
+            message: error.message || "Internal Server Error",
+            cause: error.cause || "Unknown Cause",
+          },
+        };
       }
     }),
 });
