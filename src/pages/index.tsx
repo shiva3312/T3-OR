@@ -3,7 +3,7 @@ import Head from "next/head";
 import { api } from "~/utils/api";
 import Link from 'next/link';
 
-export default function Home() {
+export default function Home({ }) {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
 
   return (
@@ -68,4 +68,11 @@ function AuthShowcase() {
       </button>
     </div>
   );
+}
+
+export function getServerSideProps() {
+  // No data fetching, returning an empty object
+  return {
+    props: {},
+  };
 }

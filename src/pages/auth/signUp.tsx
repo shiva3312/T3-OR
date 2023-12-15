@@ -9,9 +9,8 @@ import {
     Button,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { api } from "~/utils/api";
-
 
 export default function AuthenticationTitle() {
     const router = useRouter();
@@ -30,11 +29,7 @@ export default function AuthenticationTitle() {
     const handelSubmit = async () => {
         if (user.username !== '' && user.password !== '' && user.confirmPassword !== '' && user.password === user.confirmPassword) {
             const response = await createUser.mutateAsync(user);
-            if (response?.error) {
-                console.log(response?.error?.message, response)
-            } else {
-                response?.data?.userId ? await handleSingInRef() : console.log(createUser.data?.error?.message);
-            }
+            response?.data?.userId ? await handleSingInRef() : console.log(response?.error?.message);
         }
     }
 

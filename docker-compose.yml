@@ -6,11 +6,14 @@ services:
     restart: always
     ports:
       - 3306:3306
-    environment:
-      MYSQL_USER: orider
-      MYSQL_PASSWORD: KyCngL6XPzU=
-      MYSQL_DATABASE: oriderDB
-      MYSQL_RANDOM_ROOT_PASSWORD: true
+    env_file:
+      - .env
+    healthcheck:
+      test: "mysql -u orider -pKyCngL6XPzU= -e 'select 1;'"
+      interval: 1s
+      timeout: 30s
+      retries: 20
+      start_period: 10s
     volumes:
       - db:/var/lib/mysql
   app:
@@ -24,13 +27,10 @@ services:
     ports:
       - "3000:3000"
     image: t3-app
-
-    environment:
-      - DATABASE_URL=mysql://orider:KyCngL6XPzU=@db:3306/oriderDB
-      - NEXTAUTH_SECRET=OhWiIMvslqTT+j4Y0qMEojGTpsMbsIgVF+iIbsT535c=
-      - NEXTAUTH_URL=http://localhost:3000
-      - GITHUB_CLIENT_ID=415f3aa69207bbdbf9cf
-      - GITHUB_CLIENT_SECRET=31e5cc83519347d47a789266dc9ca4a4667334db
-      - JWT_SECRET=40xT+ZyEEa8z5BwKrZYITrQYXseY7VMZfXHJxQxFh2dvhhz+4NSKqynkfhe1BFRVklKYhvs1kL9i5Vhxu9PQ=="
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition : service_healthy
 volumes:
   db: {}
