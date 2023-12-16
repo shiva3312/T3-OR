@@ -1,7 +1,7 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import { MantineProvider, createTheme } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 
 import { api } from "~/utils/api";
 
@@ -13,23 +13,19 @@ import "~/styles/globals.css";
 
 // reduxStore provider
 import { Providers } from "~/lib/providers";
+import { theme } from "~/styles/theme";
 
-// Your theme configuration is merged with default theme
-const theme = createTheme({
-  fontFamily: 'Montserrat, sans-serif',
-  defaultRadius: 'xs',
-});
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+
   return (
     <Providers>
       <SessionProvider session={session}>
-        <MantineProvider
-          theme={theme}>
-          <Component {...pageProps} />
+        <MantineProvider theme={theme} forceColorScheme="light">
+          {/* <Component {...pageProps} /> */}
         </MantineProvider>
       </SessionProvider>
     </Providers>

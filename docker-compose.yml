@@ -6,8 +6,11 @@ services:
     restart: always
     ports:
       - 3306:3306
-    env_file:
-      - .env
+    environment:
+      - MYSQL_USER=orider
+      - MYSQL_PASSWORD=KyCngL6XPzU=
+      - MYSQL_DATABASE=oriderDB
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
     healthcheck:
       test: "mysql -u orider -pKyCngL6XPzU= -e 'select 1;'"
       interval: 1s
@@ -27,8 +30,11 @@ services:
     ports:
       - "3000:3000"
     image: t3-app
-    env_file:
-      - .env
+    environment:
+      - NEXTAUTH_SECRET=OhWiIMvslqTT+j4Y0qMEojGTpsMbsIgVF+iIbsT535c=
+      - NEXTAUTH_URL=http://localhost:3000
+      - JWT_SECRET=40xa8z5BwKrZYITrQYXsexu9PQ==
+      - DATABASE_URL=mysql://orider:KyCngL6XPzU=@db:3306/oriderDB
     depends_on:
       db:
         condition : service_healthy

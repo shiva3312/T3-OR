@@ -26,27 +26,25 @@ export default function ForgotPassword() {
     }
 
     return (
-        <main className=" flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-            <Container size={460} my={30} className='text-white'>
-                <Title ta="center">
-                    Forgot your password?
-                </Title>
-                <Text c="dimmed" fz="sm" ta="center">
-                    Enter your email to get a reset link
-                </Text>
+        <Container size={470} py={50} >
+            <Title ta="center">
+                Forgot your password?
+            </Title>
+            <Text c="dimmed" fz="sm" ta="center">
+                Enter your email to get a reset link
+            </Text>
 
-                <Paper withBorder shadow="md" p={30} radius="md" mt="xl" className='bg-gradient-to-b from-[#2e026d] to-[#15162c]'>
-                    <TextInput label="Your email" placeholder="me@mantine.dev" required />
-                    <Group justify="space-between" mt="lg" >
-                        <Anchor c="dimmed" size="sm" onClick={handleSingInRef} >
-                            <Center inline>
-                                <Box ml={5}>Back to the login page</Box>
-                            </Center>
-                        </Anchor>
-                        <Button onClick={handleResetPassword} className='bg-gradient-to-b from-[#2e826d] to-[#15162c]'>Reset password</Button>
-                    </Group>
-                </Paper>
-            </Container>
-        </main>
+            <Paper withBorder shadow="md" p={30} radius="md" mt="xl" >
+                <TextInput label="Your email" placeholder="me@mantine.dev" required />
+                <Group justify="space-between" mt="lg" >
+                    <Anchor c="dimmed" size="sm" onClick={handleSingInRef} >
+                        <Center inline>
+                            <Box ml={5}>Back to the login page</Box>
+                        </Center>
+                    </Anchor>
+                    <Button onClick={handleResetPassword} bg={'blue'}  >Reset password</Button>
+                </Group>
+            </Paper>
+        </Container>
     );
 }

@@ -1,6 +1,5 @@
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from 'next/router';
 import { useEffect } from "react";
 import { api } from "~/utils/api";
 
@@ -31,7 +30,6 @@ export default function Home() {
 
 function AuthShowcase() {
     const { data: sessionData } = useSession();
-    const router = useRouter();
     const { data: secretMessage } = api.post.getSecretMessage.useQuery(
         undefined, // no input
         { enabled: sessionData?.user !== undefined }
@@ -42,14 +40,14 @@ function AuthShowcase() {
         const redirectToLogin = async () => {
             if (!sessionData?.user) {
                 try {
-                    await router.push('/');
+                    signIn();
                 } catch (error) {
                     console.error('Error while redirecting to login:', error);
                 }
             }
         };
         void redirectToLogin();
-    }, [router, sessionData?.user])
+    }, [sessionData?.user])
 
     return (
         <div className="flex flex-col items-center justify-center gap-4">

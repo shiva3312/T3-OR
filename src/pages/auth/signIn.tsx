@@ -51,32 +51,30 @@ export default function AuthenticationTitle() {
     }
 
     return (
-        <main className=" flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-            <Container size={420} my={40} className='text-white'>
-                <Title ta="center" >
-                    Welcome back!
-                </Title>
-                <Text c="dimmed" size="sm" ta="center" mt={5}>
-                    Do not have an account yet?{' '}
-                    <Anchor size="sm" component="button" onClick={handleSingUpRef} >
-                        Create account
-                    </Anchor>
-                </Text>
+        <Container size={470} py={50} >
+            <Title ta="center" >
+                Welcome back!
+            </Title>
+            <Text c="dimmed" size="sm" ta="center" mt={5}>
+                Do not have an account yet?{' '}
+                <Anchor size="sm" component="button" onClick={handleSingUpRef} >
+                    Create account
+                </Anchor>
+            </Text>
 
-                <Paper withBorder shadow="md" p={30} mt={30} radius="md" className='bg-gradient-to-b from-[#2e026d] to-[#15162c]'>
-                    <TextInput label="Email" name="username" placeholder="you@mantine.dev" required onChange={handleUser} />
-                    <PasswordInput label="Password" name="password" placeholder="Your password" required mt="md" onChange={handleUser} />
-                    <Group justify="space-between" mt="lg">
-                        <Checkbox label="Remember me" />
-                        <Anchor component="button" size="sm" onClick={handleForgetPassword}>
-                            Forgot password?
-                        </Anchor>
-                    </Group>
-                    <Button fullWidth mt="xl" className='bg-gradient-to-b from-[#2e826d] to-[#15162c]' onClick={handleSingInRef}>
-                        Sign In
-                    </Button>
-                </Paper>
-            </Container>
-        </main >
+            <Paper withBorder shadow="md" p={30} mt={30} radius="md" >
+                <TextInput label="Email" name="username" placeholder="you@mantine.dev" required onChange={handleUser} />
+                <PasswordInput label="Password" name="password" placeholder="Your password" required mt="md" onChange={handleUser} />
+                <Group justify="space-between" mt="lg">
+                    <Checkbox label="Remember me" />
+                    <Anchor component="button" size="sm" onClick={handleForgetPassword}>
+                        Forgot password?
+                    </Anchor>
+                </Group>
+                <Button fullWidth mt="xl" bg={'blue'} onClick={handleSingInRef}>
+                    Sign In
+                </Button>
+            </Paper>
+        </Container>
     );
 }
